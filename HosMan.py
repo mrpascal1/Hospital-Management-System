@@ -53,8 +53,8 @@ root.config(menu = menubar)
 
 #Font defined here
 customFont = tkFont.Font(family="Arial", size=15)
-entryFont = tkFont.Font(font = "Georgia")
-textFont = tkFont.Font(size = 12)
+textFont = tkFont.Font(font = "Georgia")
+entryFont = tkFont.Font(size = 11)
 
 title = "****** Welcome To Hospital Management System *******"
 
@@ -65,38 +65,38 @@ _TITLE_ = tk.Label(root,
                    font = customFont)
 
 #Names
-first = tk.Label(root, text = "First Name :", font = entryFont)
+first = tk.Label(root, text = "First Name :", font = textFont)
 first.place(x = 4)
-first_entry = Entry(root, bd = 1.5, font = textFont)
+first_entry = Entry(root, bd = 1.5, font = entryFont)
 first_entry.place(x = 6, y = 22, width = '110px', height = '18px')
 
-middle = tk.Label(root, text = "Middle Name :", font = entryFont)
+middle = tk.Label(root, text = "Middle Name :", font = textFont)
 middle.place(x = 208)
-middle_entry = Entry(root, bd = 1.5, font = textFont)
+middle_entry = Entry(root, bd = 1.5, font = entryFont)
 middle_entry.place(x = 210, y = 22, width = '110px', height = '18px')
 
-last = tk.Label(root, text = "Last Name :", font = entryFont)
+last = tk.Label(root, text = "Last Name :", font = textFont)
 last.place(x = 408)
-last_entry = Entry(root, bd = 1.5, font = textFont)
+last_entry = Entry(root, bd = 1.5, font = entryFont)
 last_entry.place(x = 410, y = 22, width = '110px', height = '18px')
 
 #Age
-age = tk.Label(root, text = "Age :", font = entryFont)
+age = tk.Label(root, text = "Age :", font = textFont)
 age.place(x = 4, y = 70)
-age_entry = Entry(root, bd = 1.5, font = textFont)
+age_entry = Entry(root, bd = 1.5, font = entryFont)
 age_entry.place(x = 6, y = 92, width = '110px', height = '18px')
 
 #Sex
-sex = tk.Label(root, text = "Sex :", font = entryFont)
+sex = tk.Label(root, text = "Sex :", font = textFont)
 sex.place(x = 208, y = 70)
-sex_entry = Entry(root, bd = 1.5, font = textFont)
+sex_entry = Entry(root, bd = 1.5, font = entryFont)
 sex_entry.place(x = 210, y = 92, width = '110px', height = '18px')
 
 
 #Address
-address = tk.Label(root, text = "Address :", font = entryFont)
+address = tk.Label(root, text = "Address :", font = textFont)
 address.place(x = 408, y = 70)
-address_entry = Entry(root, bd = 1.5, font = textFont)
+address_entry = Entry(root, bd = 1.5, font = entryFont)
 address_entry.place(x = 410, y = 92, width = '400px', height = '18px')
 
 
