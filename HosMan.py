@@ -4,14 +4,15 @@
 import sqlite3
 import os
 import tkinter
-from tkinter import *
 import tkinter.font as tkFont
+from tkinter import *
+from tkinter import messagebox
 
 tk = tkinter
 main_database = sqlite3.connect("records.db")
 
 
-def new():
+def initialize():
     # main_database = sqlite3.connect("records.db")
     curs = main_database.cursor()
     table = curs.execute('''CREATE TABLE IF NOT EXISTS patientInfo(Patient_ID VARCHAR(1000),
@@ -49,8 +50,7 @@ def save():
                             Sex VARCHAR(10),
                             Address VARCHAR(50))''')
     """
-    insert = 'INSERT INTO patientInfo(Patient_ID, First_Name, Middle_Name, Last_Name, Age, Sex, Address) VALUES(?, ?, ' \
-             '?, ?, ?, ?, ?) '
+    insert = 'INSERT INTO patientInfo(Patient_ID, First_Name, Middle_Name, Last_Name, Age, Sex, Address) VALUES(?, ?, ?, ?, ?, ?, ?) '
     inserting = curs.execute(insert, (id_no, f_name, m_name, l_name, age_value, sex_value, add_value))
     main_database.commit()
     print(inserting)
@@ -61,16 +61,26 @@ def show():
     show_table = curs.execute('SELECT * FROM patientInfo')
     patients = show_table.fetchall()
     main_database.commit()
-    print(patients)
-
+    jj = ('\n'.join(map(str, patients)))
+    messagebox.showinfo("Patients", jj)
+    #print(patients)
 
 def delete():
     id_no = ID_entry.get()
-    curs = main_database.cursor()
-    show_table = curs.execute("DELETE FROM patientInfo WHERE Patient_ID="+id_no)
-    patients = show_table.fetchall()
-    main_database.commit()
-    print("Record Deleted")
+    if id_no == "":
+        messagebox.showerror("Error", "ID box is empty")
+    else:
+        curs = main_database.cursor()
+        show_table = curs.execute("SELECT * FROM patientInfo")
+        patients = show_table.fetchall()
+        if patients == []:
+            print("Database is Empty")
+        else:
+            show_table = curs.execute("DELETE FROM patientInfo WHERE Patient_ID="+id_no)
+            patients = show_table.fetchall()
+            main_database.commit()
+            #print(patients)
+            messagebox.showinfo("Patients", patients)
 
 
 root = Tk()
@@ -79,6 +89,11 @@ root.title("HosMan")
 width, height = root.winfo_screenwidth(), root.winfo_screenheight()
 root.geometry('%dx%d+0+0' % (width, height))
 # root.geometry("350x150+%d+%d" %( ( (root.winfo_screenwidth() / 2.) - (350 / 2.) ), ( (root.winfo_screenheight() / 2.) - (150 / 2.) ) ) )
+
+image = tk.PhotoImage(file="hospital.png")
+panel = tk.Label(root, image = image)
+panel.place(x = 800)
+#panel.pack(expand = "yes")
 
 
 menubar = Menu(root)
@@ -105,7 +120,7 @@ editmenu.add_command(label="Delete", command=donothing)
 editmenu.add_command(label="Select All", command=donothing)
 
 settingsmenu = Menu(menubar, tearoff=0)
-settingsmenu.add_command(label="Initialize db", command=new)
+settingsmenu.add_command(label="Initialize db", command=initialize)
 menubar.add_cascade(label="Settings", menu=settingsmenu)
 
 menubar.add_cascade(label="Edit", menu=editmenu)
@@ -170,13 +185,13 @@ address_entry = Entry(root, bd=1.5, font=entryFont)
 address_entry.place(x=410, y=162, width='400px', height='18px')
 
 button = Button(root, text="Submit", command=save)
-button.place(x=6, y=330)
+button.place(x=6, y=200)
 
 button = Button(root, text="Show Records", command=show)
-button.place(x=70, y=330)
+button.place(x=70, y=200)
 
 button = Button(root, text="Delete Records", command=delete)
-button.place(x=170, y=330)
+button.place(x=170, y=200)
 
 # print(root.winfo_screenwidth(), root.winfo_screenheight())
 root.mainloop()
