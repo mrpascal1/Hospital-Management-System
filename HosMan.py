@@ -9,7 +9,28 @@ from tkinter import *
 from tkinter import messagebox
 
 tk = tkinter
+root = Tk()
+top = Toplevel()
+root.title("HosMan")
+# Geometry Defined Here
+width, height = root.winfo_screenwidth(), root.winfo_screenheight()
+root.geometry('%dx%d+0+0' % (width, height))
+top.geometry('%dx%d+0+0' % (width, height))
+# root.geometry("350x150+%d+%d" %( ( (root.winfo_screenwidth() / 2.) - (350 / 2.) ), ( (root.winfo_screenheight() / 2.) - (150 / 2.) ) ) )
+
 main_database = sqlite3.connect("records.db")
+
+
+def login():
+    if username_entry.get() == "admin" and password_entry.get() == "admin":
+        root.deiconify()
+        top.destroy()
+
+
+def cancel():
+    top.destroy()
+    root.destroy()
+    sys.exit()
 
 
 def initialize():
@@ -63,7 +84,8 @@ def show():
     main_database.commit()
     jj = ('\n'.join(map(str, patients)))
     messagebox.showinfo("Patients", jj)
-    #print(patients)
+    # print(patients)
+
 
 def delete():
     id_no = ID_entry.get()
@@ -76,24 +98,17 @@ def delete():
         if patients == []:
             print("Database is Empty")
         else:
-            show_table = curs.execute("DELETE FROM patientInfo WHERE Patient_ID="+id_no)
+            show_table = curs.execute("DELETE FROM patientInfo WHERE Patient_ID=" + id_no)
             patients = show_table.fetchall()
             main_database.commit()
-            #print(patients)
+            # print(patients)
             messagebox.showinfo("Patients", patients)
 
 
-root = Tk()
-root.title("HosMan")
-# Geometry Defined Here
-width, height = root.winfo_screenwidth(), root.winfo_screenheight()
-root.geometry('%dx%d+0+0' % (width, height))
-# root.geometry("350x150+%d+%d" %( ( (root.winfo_screenwidth() / 2.) - (350 / 2.) ), ( (root.winfo_screenheight() / 2.) - (150 / 2.) ) ) )
-
 image = tk.PhotoImage(file="hospital.png")
-panel = tk.Label(root, image = image)
-panel.place(x = 800)
-#panel.pack(expand = "yes")
+panel = tk.Label(root, image=image)
+panel.place(x=800)
+# panel.pack(expand = "yes")
 
 
 menubar = Menu(root)
@@ -143,6 +158,19 @@ _TITLE_ = tk.Label(root,
                    fg="Light Green",
                    bg="Dark Green",
                    font=customFont)
+
+username = tk.Label(top, text="Username :", font=textFont)
+username.place(x=500, y=250)
+password = tk.Label(top, text="Password :", font=textFont)
+password.place(x=500, y=300)
+username_entry = Entry(top, bd=1.5, font=entryFont)
+username_entry.place(x=590, y=252)
+password_entry = Entry(top, bd=1.5, font=entryFont)
+password_entry.place(x=590, y=302)
+button1 = Button(top, text="Login", command=lambda: login())
+button1.place(x=599, y=340)
+button2 = Button(top, text="Cancel", command=lambda: cancel())
+button2.place(x=699, y=340)
 
 # ID
 ID = tk.Label(root, text="Patient ID :", font=textFont)
@@ -194,4 +222,5 @@ button = Button(root, text="Delete Records", command=delete)
 button.place(x=170, y=200)
 
 # print(root.winfo_screenwidth(), root.winfo_screenheight())
+root.withdraw()
 root.mainloop()
