@@ -21,10 +21,36 @@ top.geometry('%dx%d+0+0' % (width, height))
 main_database = sqlite3.connect("records.db")
 
 
+def registering():
+    u_entry = username_entry.get()
+    p_entry = password_entry.get()
+    curs = main_database.cursor()
+    table = curs.execute('''CREATE TABLE IF NOT EXISTS registration(username VARCHAR(20),
+                           password VARCHAR(20))''')
+    insert = 'INSERT INTO registration(username, password) VALUES(?, ?)'
+    inserting = curs.execute(insert, (u_entry, p_entry))
+    main_database.commit()
+    print(inserting)
+
+
 def login():
-    if username_entry.get() == "admin" and password_entry.get() == "admin":
+    u_entry = username_entry.get()
+    p_entry = password_entry.get()
+    curs = main_database.cursor()
+    """
+    table = curs.execute('''CREATE TABLE IF NOT EXISTS registration(username VARCHAR(20),
+                           password VARCHAR(20))''')
+    """
+    curs.execute("SELECT * FROM registration WHERE username = ? AND password = ?", (u_entry, p_entry))
+    #fetch = get_username.fetchall()
+    #print(fetch)
+    #get_password = curs.execute("SELECT * FROM registration WHERE password==" + p_entry)
+    #main_database.commit()
+    if curs.fetchall():
         root.deiconify()
         top.destroy()
+    else:
+        print("Login Failed")
 
 
 def cancel():
@@ -79,7 +105,7 @@ def save():
 
 def show():
     curs = main_database.cursor()
-    show_table = curs.execute('SELECT * FROM patientInfo')
+    show_table = curs.execute("SELECT * FROM patientInfo")
     patients = show_table.fetchall()
     main_database.commit()
     jj = ('\n'.join(map(str, patients)))
@@ -165,13 +191,14 @@ password = tk.Label(top, text="Password :", font=textFont)
 password.place(x=500, y=300)
 username_entry = Entry(top, bd=1.5, font=entryFont)
 username_entry.place(x=590, y=252)
-password_entry = Entry(top, bd=1.5, font=entryFont)
+password_entry = Entry(top, show='*', bd=1.5, font=entryFont)
 password_entry.place(x=590, y=302)
 button1 = Button(top, text="Login", command=lambda: login())
 button1.place(x=599, y=340)
 button2 = Button(top, text="Cancel", command=lambda: cancel())
 button2.place(x=699, y=340)
-
+button2 = Button(top, text="Register", command=lambda: registering())
+button2.place(x=650, y=380)
 # ID
 ID = tk.Label(root, text="Patient ID :", font=textFont)
 ID.place(x=4)
