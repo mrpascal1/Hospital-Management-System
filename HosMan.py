@@ -1,4 +1,4 @@
-# Author : mrpacal
+# Author : mrpascal
 # Contact : ansarishahid640@gmail.com
 
 import sqlite3
